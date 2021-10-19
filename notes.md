@@ -20,10 +20,13 @@ if ! docker buildx bake --set binary.platform=windows/amd64 ; then
     docker buildx bake --set binary.platform=windows/amd64
     git checkout scripts/build/binary
 fi
+sha256sum build/docker-* > build/sha256sum.txt
 popd
 mkdir -p releases/$VERSION
 
 for file in $CLI/build/docker-* ; do
   cp $file releases/$VERSION/
 done
+git tag $VERSION
+git push origin $VERSION
 ```
